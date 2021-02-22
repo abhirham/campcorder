@@ -18,8 +18,11 @@
     </v-app-bar>
 </template>
 
-<style scoped></style>
-.customLink { text-decoration: none; }
+<style scoped>
+.customLink {
+    text-decoration: none;
+}
+</style>
 <script>
 export default {
     name: "AppBar",
