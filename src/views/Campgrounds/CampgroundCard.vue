@@ -1,5 +1,13 @@
 <template>
-    <v-card elevation="3">
+    <v-card
+        elevation="3"
+        @click="
+            $router.push({
+                name: 'viewCampground',
+                params: { campgroundId: 123 }
+            })
+        "
+    >
         <v-img
             src="https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80"
             height="200px"

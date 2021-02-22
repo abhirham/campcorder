@@ -2,7 +2,14 @@
     <v-app-bar app color="primary" dark dense>
         <v-container>
             <v-row>
-                <v-toolbar-title>YelpCamp</v-toolbar-title>
+                <v-toolbar-title>
+                    <router-link
+                        class="white--text customLink"
+                        :to="{ name: 'Home' }"
+                    >
+                        YelpCamp
+                    </router-link>
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn text color="white">Login</v-btn>
                 <v-btn text color="white">Sign Up</v-btn>
@@ -11,6 +18,8 @@
     </v-app-bar>
 </template>
 
+<style scoped></style>
+.customLink { text-decoration: none; }
 <script>
 export default {
     name: "AppBar",
