@@ -38,8 +38,8 @@
     </v-card>
 </template>
 <script>
-export default {
-    name: "CampgroundCard",
-    components: {}
-};
+    export default {
+        name: "CampgroundCard",
+        components: {}
+    };
 </script>
