@@ -11,6 +11,7 @@
 
 <script>
 import AppBar from "./AppBar";
+import "./App.css";
 
 export default {
     name: "App",

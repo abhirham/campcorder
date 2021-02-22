@@ -4,7 +4,7 @@
             <v-row>
                 <v-toolbar-title>
                     <router-link
-                        class="white--text customLink"
+                        class="white--text td-n"
                         :to="{ name: 'Home' }"
                     >
                         YelpCamp
@@ -18,11 +18,6 @@
     </v-app-bar>
 </template>
 
-<style scoped>
-.customLink {
-    text-decoration: none;
-}
-</style>
 <script>
 export default {
     name: "AppBar",
