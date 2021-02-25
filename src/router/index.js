@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const ListCampgrounds = () => import( /* webpackChunkName: "about" */ '@/views/ListCampgrounds/container');
-const ViewCampground = () => import( /* webpackChunkName: "about" */ '@/views/ViewCampgrounds/container');
+const ViewCampground = () => import( /* webpackChunkName: "about" */ '@/views/ViewCampgrounds/ViewCampground');
 Vue.use(VueRouter)
 
 const routes = [{

@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col md="4" xl="3" sm="6" v-for="camp in camps" :key="camp.id">
-            <CampgroundCard :camp="camp" />
+            <CampgroundCard :camp="camp" compact />
         </v-col>
     </v-row>
 </template>

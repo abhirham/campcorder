@@ -1,14 +1,14 @@
 <template>
     <v-card
-        elevation="3"
-        @click="
-            $router.push({
-                name: 'viewCampground',
-                params: { campgroundId: camp.id }
-            })
+        :to="
+            compact
+                ? { name: 'viewCampground', params: { campgroundId: camp.id } }
+                : null
         "
+        :hover="compact"
+        :ripple="compact"
     >
-        <v-img :src="camp.src" height="200px"></v-img>
+        <v-img :src="camp.src" :max-height="compact ? '200px' : null"></v-img>
         <v-card-text>
             <v-row>
                 <v-col cols="10">
@@ -46,6 +46,10 @@
                         key => val[key] === undefined
                     );
                 }
+            },
+            compact: {
+                type: Boolean,
+                default: false
             }
         },
         components: {}
