@@ -7,7 +7,7 @@
         "
         :hover="compact"
     >
-        <v-img :src="camp.src" :max-height="compact ? '200px' : null"></v-img>
+        <v-img :src="camp.src" :max-height="compact ? '200px' : '50vh'"></v-img>
         <v-card-text>
             <v-row>
                 <v-col cols="10">
@@ -77,7 +77,7 @@
                 type: Object,
                 required: true,
                 validator(val) {
-                    return !["id", "src", "title", "rating", "price"].some(
+                    return !["id", "src", "title", "price"].some(
                         key => val[key] === undefined
                     );
                 }
