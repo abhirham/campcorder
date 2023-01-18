@@ -5,7 +5,7 @@
                 <v-toolbar-title>
                     <router-link
                         class="white--text td-n"
-                        :to="{ name: 'Home' }"
+                        :to="{ name: 'viewCampground' }"
                     >
                         YelpCamp
                     </router-link>

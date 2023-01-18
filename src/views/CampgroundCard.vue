@@ -42,13 +42,25 @@
                 </div>
                 <v-divider class="my-3"></v-divider>
                 <div class="commentSection">
+                    <v-card
+                        flat
+                        v-for="comment in camp.comments"
+                        :key="comment.docId"
+                    >
+                        <v-card-text>
+                            <h3 class="font-weight-bold">{{ comment.from }}</h3>
+                            {{ comment.comment }}
+                        </v-card-text>
+                    </v-card>
                     <v-text-field
                         placeholder="Leave a Review"
                         append-icon="mdi-send"
                         outlined
                         rounded
                         dense
-                        @click:append="() => {}"
+                        v-model="comment"
+                        @keyup.enter="handleCommentSubmit"
+                        @click:append="handleCommentSubmit"
                     >
                     </v-text-field>
                 </div>
@@ -56,6 +68,7 @@
         </v-card-text>
     </v-card>
 </template>
+
 <script>
     export default {
         name: "CampgroundCard",
@@ -74,6 +87,16 @@
                 default: false
             }
         },
-        components: {}
+        components: {},
+        data() {
+            return {
+                comment: ""
+            };
+        },
+        methods: {
+            handleCommentSubmit() {
+                console.log("ii-i", this.comment);
+            }
+        }
     };
 </script>

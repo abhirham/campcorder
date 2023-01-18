@@ -2,19 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const ListCampgrounds = () => import( /* webpackChunkName: "about" */ '@/views/ListCampgrounds/container');
-const ViewCampground = () => import( /* webpackChunkName: "about" */ '@/views/ViewCampgrounds/ViewCampground');
 Vue.use(VueRouter)
 
-const routes = [{
-    path: '/',
-    name: 'Home',
-    component: ListCampgrounds
-  },
+const routes = [
   {
-    path: '/:campgroundId',
+    path: '/:campgroundId?',
     name: 'viewCampground',
     props: true,
-    component: ViewCampground
+    component: ListCampgrounds
   }
 ]
 
