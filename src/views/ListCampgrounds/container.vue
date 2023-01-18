@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import moment from "moment";
     import CampgroundCard from "@/views/CampgroundCard";
     import ViewCampgroundModal from "@/views/ViewCampgrounds/ViewCampgroundModal.vue";
 
@@ -41,55 +42,59 @@
                     createdAt: "August 6 2018",
                     comments: [
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 4,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 2,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 2,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 1,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 1,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 1,
                             docId: "123",
                         },
                         {
-                            comment: "This is so nice!",
+                            text: "This is so nice!",
                             from: "Prasuna",
-                            commented_on: "March 21 2021",
+                            created_at: "March 21 2021",
                             rating: 1,
                             docId: "123",
                         },
-                    ].map((x, i) => ({ ...x, docId: i })),
+                    ].map((x, i) => ({
+                        ...x,
+                        docId: i,
+                        created_at: moment().subtract(i, "d").format(),
+                    })),
                 },
             },
         }),
