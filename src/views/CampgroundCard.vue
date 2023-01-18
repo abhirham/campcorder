@@ -1,8 +1,5 @@
 <template>
-    <v-card
-        :to="{ name: 'viewCampground', params: { campgroundId: camp.id } }"
-        :hover="compact"
-    >
+    <v-card :to="{ name: 'viewCampground', params: { campgroundId: camp.id } }">
         <v-img :src="camp.src" max-height="200px"></v-img>
         <v-card-text>
             <v-row>
@@ -13,40 +10,14 @@
                     <span>$</span>
                 </v-col>
             </v-row>
-
-            <div class="d-flex mt-1">
-                <v-rating
-                    hover
-                    half-increments
-                    length="5"
-                    small
-                    dense
-                    :value="camp.rating"
-                    background-color="primary"
-                    readonly
-                ></v-rating>
-                <span class="ml-3">2 Reviews</span>
-            </div>
-            <template v-if="!compact">
-                <div class="commentSection">
-                    <v-text-field
-                        placeholder="Leave a Review"
-                        append-icon="mdi-send"
-                        outlined
-                        rounded
-                        dense
-                        v-model="comment"
-                        @keyup.enter="handleCommentSubmit"
-                        @click:append="handleCommentSubmit"
-                    >
-                    </v-text-field>
-                </div>
-            </template>
+            <RatingsComponent class="mt-1" :comments="camp.comments" />
         </v-card-text>
     </v-card>
 </template>
 
 <script>
+    import RatingsComponent from "@/views/RatingsComponent.vue";
+
     export default {
         name: "CampgroundCard",
         props: {
@@ -59,12 +30,8 @@
                     );
                 },
             },
-            compact: {
-                type: Boolean,
-                default: false,
-            },
         },
-        components: {},
+        components: { RatingsComponent },
         data() {
             return {
                 comment: "",

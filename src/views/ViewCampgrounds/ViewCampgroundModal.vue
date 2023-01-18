@@ -35,19 +35,7 @@
                     <v-spacer />
                     <div class="text-subtitle-1">${{ camp.price }}/Night</div>
                 </v-row>
-                <div class="d-flex mt-2 mb-3">
-                    <v-rating
-                        hover
-                        half-increments
-                        length="5"
-                        small
-                        dense
-                        :value="overallRating.avg"
-                        background-color="primary"
-                        readonly
-                    ></v-rating>
-                    <span class="ml-3">{{ overallRating.total }} Reviews</span>
-                </div>
+                <RatingsComponent class="mt-2 mb-3" :comments="camp.comments" />
                 <div>{{ camp.description }}</div>
                 <v-divider class="my-3" />
                 <v-list dense>
@@ -86,6 +74,7 @@
 </template>
 <script>
     import CampgroundCard from "@/views/CampgroundCard";
+    import RatingsComponent from "@/views/RatingsComponent.vue";
 
     export default {
         name: "ViewCampgroundModal",
@@ -93,7 +82,7 @@
             camp: { required: true, default: () => ({}) },
             showModal: { required: true, type: Boolean },
         },
-        components: { CampgroundCard },
+        components: { CampgroundCard, RatingsComponent },
         computed: {
             overallRating() {
                 let sum = 0;
