@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state() {
         return {
-            loading: []
+            loading: [1],
         };
     },
     mutations: {
@@ -14,12 +14,12 @@ export default {
             }
 
             state.loading = newArr.slice(1);
-        }
+        },
     },
     getters: {
         isLoading(state) {
             return state.loading.length > 0;
-        }
+        },
     },
-    actions: {}
-}
+    actions: {},
+};

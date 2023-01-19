@@ -103,7 +103,16 @@
                                     <v-list-item two-line>
                                         <v-list-item-content>
                                             <v-list-item-title>
-                                                <div class="d-flex flex-row">
+                                                <div
+                                                    :class="[
+                                                        'd-flex flex-row',
+                                                        {
+                                                            'primary--text font-weight-bold':
+                                                                item.from ===
+                                                                'Abhirham',
+                                                        },
+                                                    ]"
+                                                >
                                                     {{ item.from }}
                                                     <v-rating
                                                         hover
@@ -129,6 +138,20 @@
                                                 item.text
                                             }}</v-list-item-subtitle>
                                         </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-row>
+                                                <v-btn icon
+                                                    ><v-icon
+                                                        >mdi-pencil</v-icon
+                                                    ></v-btn
+                                                >
+                                                <v-btn icon color="error"
+                                                    ><v-icon
+                                                        >mdi-delete</v-icon
+                                                    ></v-btn
+                                                >
+                                            </v-row>
+                                        </v-list-item-action>
                                     </v-list-item>
                                 </template>
                             </v-virtual-scroll>
@@ -174,7 +197,7 @@
                 return { avg, total: count };
             },
             hasUserCommented() {
-                return this.camp.comments[0].from === "Abhirham";
+                return (this.camp.comments ?? [{}])[0].from === "Abhirham";
             },
         },
         methods: {

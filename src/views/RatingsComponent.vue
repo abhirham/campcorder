@@ -18,7 +18,7 @@
     export default {
         name: "RatingsComponent",
         props: {
-            comments: { type: Array, required: true, default: [] },
+            comments: { type: Array, required: true, default: () => [] },
         },
         computed: {
             overallRating() {

@@ -2,7 +2,7 @@
     <v-app>
         <AppBar />
         <v-main>
-            <v-container>
+            <v-container fill-height>
                 <router-view></router-view>
             </v-container>
         </v-main>
@@ -10,18 +10,18 @@
 </template>
 
 <script>
-import AppBar from "./AppBar";
-import "./App.css";
+    import AppBar from "./AppBar";
+    import "./App.css";
 
-export default {
-    name: "App",
+    export default {
+        name: "App",
 
-    components: {
-        AppBar
-    },
+        components: {
+            AppBar,
+        },
 
-    data: () => ({
-        //
-    })
-};
+        data: () => ({
+            //
+        }),
+    };
 </script>
