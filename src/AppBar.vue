@@ -12,7 +12,14 @@
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <template v-if="isUserLoggedIn">
-                    <v-btn class="mr-2" rounded text>Add new Camp</v-btn>
+                    <v-btn
+                        class="mr-2"
+                        v-if="$route.name !== 'createCamp'"
+                        @click="$router.push({ name: 'createCamp' })"
+                        rounded
+                        text
+                        >Add new Camp</v-btn
+                    >
                     <v-menu offset-y>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn

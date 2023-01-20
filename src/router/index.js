@@ -7,6 +7,9 @@ const ListCampgrounds = () =>
 const SignUp = () =>
     import(/* webpackChunkName: "about" */ "@/views/SignUp.vue");
 const Login = () => import(/* webpackChunkName: "about" */ "@/views/Login.vue");
+const CreateCampGround = () =>
+    import(/* webpackChunkName: "about" */ "@/views/CreateCampGround.vue");
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -19,6 +22,14 @@ const routes = [
         name: "viewCampground",
         props: true,
         component: ListCampgrounds
+    },
+    {
+        path: "/create",
+        name: "createCamp",
+        component: CreateCampGround,
+        meta: {
+            authOnly: true
+        }
     },
     {
         path: "/signup",
