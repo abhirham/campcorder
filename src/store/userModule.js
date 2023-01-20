@@ -60,6 +60,9 @@ export default {
 
             resolve();
         },
+        signInWithEmailAndPassword({}, { email, password }) {
+            return auth.signInWithEmailAndPassword(email, password);
+        },
         logoutUser() {
             return auth.signOut();
         },

@@ -22,13 +22,9 @@
         },
         computed: {
             fillHeight() {
-                return ["signup"].indexOf(this.$route.name) > -1;
+                return this.$route.meta.fillHeight;
             }
         },
-
-        data: () => ({
-            //
-        }),
         beforeMount() {
             auth.onAuthStateChanged(async user => {
                 if (user) {
@@ -49,6 +45,10 @@
                             userId: user.uid
                         }
                     );
+
+                    if (this.$route.meta.noAuth) {
+                        this.$router.push({ name: "viewCampground" });
+                    }
                 } else {
                     this.$store.commit("userModule/clearUserData");
                 }

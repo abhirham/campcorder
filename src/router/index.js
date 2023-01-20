@@ -6,6 +6,7 @@ const ListCampgrounds = () =>
     import(/* webpackChunkName: "about" */ "@/views/ListCampgrounds/container");
 const SignUp = () =>
     import(/* webpackChunkName: "about" */ "@/views/SignUp.vue");
+const Login = () => import(/* webpackChunkName: "about" */ "@/views/Login.vue");
 Vue.use(VueRouter);
 
 const routes = [
@@ -24,7 +25,17 @@ const routes = [
         name: "signup",
         component: SignUp,
         meta: {
-            noAuth: true
+            noAuth: true,
+            fillHeight: true
+        }
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: Login,
+        meta: {
+            noAuth: true,
+            fillHeight: true
         }
     }
 ];

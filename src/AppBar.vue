@@ -41,7 +41,12 @@
                     </v-menu>
                 </template>
                 <template v-else>
-                    <v-btn text color="white">Login</v-btn>
+                    <v-btn
+                        text
+                        color="white"
+                        @click="$router.push({ name: 'login' })"
+                        >Login</v-btn
+                    >
                     <v-btn
                         @click="$router.push({ name: 'signup' })"
                         text
