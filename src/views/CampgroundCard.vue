@@ -26,21 +26,11 @@
                 required: true,
                 validator(val) {
                     return !["id", "src", "title", "price"].some(
-                        (key) => val[key] === undefined
+                        key => val[key] === undefined
                     );
-                },
-            },
+                }
+            }
         },
-        components: { RatingsComponent },
-        data() {
-            return {
-                comment: "",
-            };
-        },
-        methods: {
-            handleCommentSubmit() {
-                console.log("ii-i", this.comment);
-            },
-        },
+        components: { RatingsComponent }
     };
 </script>

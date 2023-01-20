@@ -2,7 +2,7 @@
     <div>
         <v-row>
             <v-col md="4" xl="3" sm="6" v-for="camp in camps" :key="camp.id">
-                <CampgroundCard :camp="camp" compact />
+                <CampgroundCard :camp="camp" />
             </v-col>
         </v-row>
         <ViewCampgroundModal
@@ -24,12 +24,13 @@
         computed: {
             showModal() {
                 return this.campgroundId !== undefined;
-            },
+            }
         },
         data: () => ({
             camps: {
                 1: {
-                    src: "https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80",
+                    src:
+                        "https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80",
                     id: 1,
                     title: "My Camp ground",
                     createdBy: "abhirham",
@@ -46,57 +47,59 @@
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 4,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 2,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 2,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 1,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 1,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 1,
-                            docId: "123",
+                            docId: "123"
                         },
                         {
                             text: "This is so nice!",
                             from: "Prasuna",
                             created_at: "March 21 2021",
                             rating: 1,
-                            docId: "123",
-                        },
+                            docId: "123"
+                        }
                     ].map((x, i) => ({
                         ...x,
                         docId: i,
-                        created_at: moment().subtract(i, "d").format(),
-                    })),
-                },
-            },
-        }),
+                        created_at: moment()
+                            .subtract(i, "d")
+                            .format()
+                    }))
+                }
+            }
+        })
     };
 </script>

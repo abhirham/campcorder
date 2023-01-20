@@ -5,9 +5,10 @@ export default {
     namespaced: true,
     state() {
         return {
-            userId: "",
+            userId: null,
             firstName: "",
             lastName: "",
+            creatingUserPromise: null
         };
     },
     mutations: {
@@ -16,21 +17,62 @@ export default {
             state.firstName = firstName;
             state.lastName = lastName;
         },
+        clearUserData(state) {
+            state.userId = null;
+            state.firstName = "";
+            state.lastName = "";
+        },
+        setCreatingUserPromise(state, promise) {
+            state.creatingUserPromise = promise;
+        }
     },
-    getters: {},
+    getters: {
+        isUserLoggedIn(state) {
+            return state.userId !== null;
+        }
+    },
     actions: {
         async createUserWithEmailAndPassword(
-            { commit },
+            { state, commit },
             { email, password, firstName, lastName }
         ) {
+            let resolve, reject;
+
+            commit(
+                "setCreatingUserPromise",
+                new Promise((res, rej) => {
+                    resolve = res;
+                    reject = rej;
+                })
+            );
+
             let { user } = await auth.createUserWithEmailAndPassword(
                 email,
                 password
             );
+
             let payload = { userId: user.uid, firstName, lastName };
 
-            await db.collection("users").doc(payload.userId).set(payload);
-            commit("setUser", payload);
+            await db
+                .collection("users")
+                .doc(payload.userId)
+                .set(payload);
+
+            resolve();
         },
-    },
+        logoutUser() {
+            return auth.signOut();
+        },
+        fetchUserFromFirestore({ commit }, { userId }) {
+            return db
+                .collection("users")
+                .doc(userId)
+                .get()
+                .then(res => {
+                    let data = res.data();
+                    commit("setUser", data);
+                    return data;
+                });
+        }
+    }
 };

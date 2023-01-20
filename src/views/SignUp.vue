@@ -58,7 +58,7 @@
             password: "",
             firstName: "",
             lastName: "",
-            isLoading: false,
+            isLoading: false
         }),
         computed: {
             disableSignUp() {
@@ -66,9 +66,9 @@
                     this.email,
                     this.password,
                     this.lastName,
-                    this.firstName,
-                ].some((x) => x.length === 0);
-            },
+                    this.firstName
+                ].some(x => x.length === 0);
+            }
         },
         methods: {
             signUpUser() {
@@ -79,10 +79,10 @@
                         email,
                         password,
                         firstName,
-                        lastName,
+                        lastName
                     })
                     .finally(() => (this.isLoading = false));
-            },
-        },
+            }
+        }
     };
 </script>
