@@ -37,7 +37,12 @@
                     <v-spacer />
                     <div class="text-subtitle-1">${{ camp.price }}/Night</div>
                 </v-row>
-                <RatingsComponent class="mt-2 mb-3" :comments="comments" />
+                <RatingsComponent
+                    class="mt-2 mb-3"
+                    :totalRatings="camp.numRatings"
+                    :avgRating="camp.avgRating"
+                    :comments="comments"
+                />
                 <v-tabs v-model="tab">
                     <v-tab>Description</v-tab>
                     <v-tab>Reviews</v-tab>

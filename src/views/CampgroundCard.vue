@@ -10,7 +10,11 @@
                     <span>$</span>
                 </v-col>
             </v-row>
-            <RatingsComponent class="mt-1" :comments="camp.comments" />
+            <RatingsComponent
+                class="mt-1"
+                :totalRatings="camp.numRatings"
+                :avgRating="camp.avgRating"
+            />
         </v-card-text>
     </v-card>
 </template>

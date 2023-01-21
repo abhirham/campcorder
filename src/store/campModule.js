@@ -22,6 +22,8 @@ export default {
                 createdBy: userId,
                 creatorName: firstName,
                 price,
+                numRatings: 0,
+                avgRating: 0,
                 createdAt: moment.utc().format()
             };
 
@@ -42,19 +44,37 @@ export default {
         },
         addComment({ rootState }, { text, rating, campId }) {
             let { userId, firstName } = rootState.userModule;
-            let doc = db.collection("comments").doc();
 
-            let payload = {
-                text,
-                rating,
-                id: doc.id,
-                userId: userId,
-                userName: firstName,
-                campId,
-                createdAt: moment.utc().format()
-            };
+            let campref = db.collection("camps").doc(campId);
+            let commentRef = db.collection("comments").doc();
+            return db.runTransaction(transaction => {
+                return transaction.get(campref).then(res => {
+                    let { numRatings, avgRating } = res.data();
 
-            return doc.set(payload).then(res => payload);
+                    let newNumRating = numRatings + 1;
+                    let newAvgRating =
+                        (avgRating * numRatings + rating) / newNumRating;
+
+                    transaction.update(campref, {
+                        numRatings: newNumRating,
+                        avgRating: newAvgRating
+                    });
+
+                    let payload = {
+                        text,
+                        rating,
+                        id: commentRef.id,
+                        userId: userId,
+                        userName: firstName,
+                        campId,
+                        createdAt: moment.utc().format()
+                    };
+
+                    transaction.set(commentRef, payload);
+
+                    return payload;
+                });
+            });
         },
         fetchCommentsForCamp(ctx, { campId }) {
             return db

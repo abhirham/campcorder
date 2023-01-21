@@ -6,11 +6,11 @@
             length="5"
             small
             dense
-            :value="overallRating.avg"
+            :value="avgRating"
             background-color="primary"
             readonly
         ></v-rating>
-        <span class="ml-3">{{ overallRating.total }} Reviews</span>
+        <span class="ml-3">{{ totalRatings }} Reviews</span>
     </div>
 </template>
 
@@ -18,7 +18,8 @@
     export default {
         name: "RatingsComponent",
         props: {
-            comments: { type: Array, required: true, default: () => [] },
+            avgRating: { type: Number, required: true },
+            totalRatings: { type: Number, required: true }
         },
         computed: {
             overallRating() {
@@ -26,7 +27,7 @@
                 let count = 0;
                 let avg = 0;
 
-                (this.comments ?? []).forEach((x) => {
+                (this.comments ?? []).forEach(x => {
                     sum += x.rating;
                     count++;
                 });
@@ -36,7 +37,7 @@
                 }
 
                 return { avg, total: count };
-            },
-        },
+            }
+        }
     };
 </script>
