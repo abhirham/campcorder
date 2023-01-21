@@ -23,12 +23,7 @@
         props: {
             camp: {
                 type: Object,
-                required: true,
-                validator(val) {
-                    return !["id", "src", "title", "price"].some(
-                        key => val[key] === undefined
-                    );
-                }
+                required: true
             }
         },
         components: { RatingsComponent }

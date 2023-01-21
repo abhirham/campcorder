@@ -42,7 +42,9 @@
             </v-row>
         </v-card-text>
         <v-card-actions>
-            <v-btn color="primary">Create</v-btn>
+            <v-btn color="primary" :disabled="disableCreate" @click="createCamp"
+                >Create</v-btn
+            >
             <v-btn
                 class="ml-5"
                 @click="$router.push({ name: 'viewCampground' })"
@@ -59,7 +61,32 @@
         data: () => ({
             title: "",
             description: "",
-            price: null
-        })
+            price: null,
+            loading: false
+        }),
+        computed: {
+            disableCreate() {
+                return (
+                    [this.title, this.description].some(x => x.length === 0) ||
+                    this.price === null
+                );
+            }
+        },
+        methods: {
+            createCamp() {
+                this.loading = true;
+                let { title, description, price } = this;
+                this.$store
+                    .dispatch("campModule/createCamp", {
+                        title,
+                        description,
+                        price
+                    })
+                    .then(res => {
+                        this.$router.push({ name: "viewCampground" });
+                    })
+                    .finally(() => (this.loading = false));
+            }
+        }
     };
 </script>

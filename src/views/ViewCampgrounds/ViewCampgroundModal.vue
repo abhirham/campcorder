@@ -1,7 +1,7 @@
 <template>
     <v-dialog
         content-class="ViewCampgroundModal"
-        :value="showModal"
+        :value="true"
         persistent
         no-click-animation
         width="70%"
@@ -28,14 +28,16 @@
             </v-img>
             <v-card-text class="black--text pt-5">
                 <v-row class="mt-1 mx-0">
-                    Submitted by
-                    <span class="primary--text mx-1">{{ camp.createdBy }}</span>
+                    Posted by
+                    <span class="primary--text mx-1">{{
+                        camp.creatorName
+                    }}</span>
                     on
-                    {{ camp.createdAt }}
+                    {{ dateFormatter(camp.createdAt, "D MMM, YYYY") }}
                     <v-spacer />
                     <div class="text-subtitle-1">${{ camp.price }}/Night</div>
                 </v-row>
-                <RatingsComponent class="mt-2 mb-3" :comments="camp.comments" />
+                <RatingsComponent class="mt-2 mb-3" :comments="comments" />
                 <v-tabs v-model="tab">
                     <v-tab>Description</v-tab>
                     <v-tab>Reviews</v-tab>
@@ -97,7 +99,7 @@
                             <v-virtual-scroll
                                 height="300"
                                 item-height="70"
-                                :items="camp.comments"
+                                :items="comments"
                             >
                                 <template v-slot:default="{ item }">
                                     <v-list-item two-line>
@@ -108,12 +110,12 @@
                                                         'd-flex flex-row',
                                                         {
                                                             'primary--text font-weight-bold':
-                                                                item.from ===
-                                                                'Abhirham',
-                                                        },
+                                                                item.userId ===
+                                                                userId
+                                                        }
                                                     ]"
                                                 >
-                                                    {{ item.from }}
+                                                    {{ item.userName }}
                                                     <v-rating
                                                         hover
                                                         half-increments
@@ -130,7 +132,8 @@
                                             <div class="text-caption">
                                                 ({{
                                                     dateFormatter(
-                                                        item.created_at
+                                                        item.createdAt,
+                                                        "D MMM, YYYY"
                                                     )
                                                 }})
                                             </div>
@@ -166,26 +169,28 @@
     import CampgroundCard from "@/views/CampgroundCard";
     import RatingsComponent from "@/views/RatingsComponent.vue";
     import moment from "moment";
+    import { mapState } from "vuex";
 
     export default {
         name: "ViewCampgroundModal",
         props: {
-            camp: { required: true, default: () => ({}) },
-            showModal: { required: true, type: Boolean },
+            camp: { required: true, default: () => ({}) }
         },
         components: { CampgroundCard, RatingsComponent },
         data: () => ({
             tab: 0,
             rating: 0,
             description: "",
+            comments: []
         }),
         computed: {
+            ...mapState("userModule", ["userId"]),
             overallRating() {
                 let sum = 0;
                 let count = 0;
                 let avg = 0;
 
-                (this.camp.comments ?? []).forEach((x) => {
+                (this.comments ?? []).forEach(x => {
                     sum += x.rating;
                     count++;
                 });
@@ -197,24 +202,31 @@
                 return { avg, total: count };
             },
             hasUserCommented() {
-                return (this.camp.comments ?? [{}])[0].from === "Abhirham";
-            },
+                return (this.comments ?? [{}])[0]?.userId === this.userId;
+            }
         },
         methods: {
-            dateFormatter(date) {
-                return moment(date).format("D MMM, YYYY");
+            dateFormatter(date, format) {
+                return moment(date).format(format);
             },
             addComment() {
-                let commentObj = {
-                    text: this.description,
-                    from: "Abhirham",
-                    created_at: moment(),
-                    rating: this.rating,
-                    docId: "123",
-                };
-
-                this.camp.comments = [commentObj, ...this.camp.comments];
-            },
+                this.$store
+                    .dispatch("campModule/addComment", {
+                        text: this.description,
+                        rating: this.rating,
+                        campId: this.camp.id
+                    })
+                    .then(res => {
+                        this.comments = [res, ...this.comments];
+                    });
+            }
         },
+        mounted() {
+            this.$store
+                .dispatch("campModule/fetchCommentsForCamp", {
+                    campId: this.camp.id
+                })
+                .then(res => (this.comments = res));
+        }
     };
 </script>
