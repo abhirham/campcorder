@@ -5,12 +5,14 @@
             <v-container :fill-height="fillHeight">
                 <router-view></router-view>
             </v-container>
+            <Alerts />
         </v-main>
     </v-app>
 </template>
 
 <script>
     import AppBar from "./AppBar";
+    import Alerts from "@/views/Alerts.vue";
     import "./App.css";
     import { auth } from "@/firebase";
 
@@ -18,7 +20,8 @@
         name: "App",
 
         components: {
-            AppBar
+            AppBar,
+            Alerts
         },
         computed: {
             fillHeight() {

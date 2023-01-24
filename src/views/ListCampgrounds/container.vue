@@ -23,11 +23,11 @@
                     this.campgroundId !== undefined &&
                     Object.keys(this.camps).length > 0
                 );
+            },
+            camps() {
+                return this.$store.state.campModule.camps;
             }
         },
-        data: () => ({
-            camps: {}
-        }),
         mounted() {
             this.$store.dispatch("campModule/fetchCamps").then(res => {
                 let obj = {};
@@ -40,7 +40,7 @@
                     };
                 });
 
-                this.camps = obj;
+                this.$store.commit("campModule/setCamps", obj);
             });
         }
     };

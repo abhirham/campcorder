@@ -5,9 +5,18 @@ export default {
     name: "campModule",
     namespaced: true,
     state() {
-        return {};
+        return {
+            camps: {}
+        };
     },
-    mutations: {},
+    mutations: {
+        setCamps(state, payload) {
+            state.camps = payload;
+        },
+        updateCamp(state, { campId, ...payload }) {
+            state.camps[campId] = { ...state.camps[campId], ...payload };
+        }
+    },
     getters: {},
     actions: {
         createCamp({ rootState }, { title, description, price }) {
@@ -42,24 +51,25 @@ export default {
                     return arr;
                 });
         },
-        addComment({ rootState }, { text, rating, campId }) {
+        addComment({ rootState, commit }, { text, rating, campId }) {
             let { userId, firstName } = rootState.userModule;
 
             let campref = db.collection("camps").doc(campId);
             let commentRef = db.collection("comments").doc();
-            return db.runTransaction(transaction => {
-                return transaction.get(campref).then(res => {
-                    let { numRatings, avgRating } = res.data();
 
+            return commentUpdateHlpr({
+                campref,
+                campPayloadCb({ numRatings, avgRating }) {
                     let newNumRating = numRatings + 1;
                     let newAvgRating =
                         (avgRating * numRatings + rating) / newNumRating;
 
-                    transaction.update(campref, {
+                    return {
                         numRatings: newNumRating,
                         avgRating: newAvgRating
-                    });
-
+                    };
+                },
+                commentCb({ transaction }) {
                     let payload = {
                         text,
                         rating,
@@ -73,6 +83,39 @@ export default {
                     transaction.set(commentRef, payload);
 
                     return payload;
+                }
+            }).then(({ campPayload, payload }) => {
+                commit("updateCamp", {
+                    campId,
+                    ...campPayload
+                });
+
+                return payload;
+            });
+        },
+        async deleteComment({ commit }, { rating, campId, commentId }) {
+            let campref = db.collection("camps").doc(campId);
+            let commentRef = db.collection("comments").doc(commentId);
+
+            return commentUpdateHlpr({
+                campref,
+                campPayloadCb({ numRatings, avgRating }) {
+                    let newNumRating = numRatings - 1;
+                    let newAvgRating =
+                        (avgRating * numRatings - rating) / newNumRating;
+
+                    return {
+                        numRatings: newNumRating,
+                        avgRating: newAvgRating
+                    };
+                },
+                commentCb({ transaction }) {
+                    transaction.delete(commentRef);
+                }
+            }).then(({ campPayload }) => {
+                commit("updateCamp", {
+                    campId,
+                    ...campPayload
                 });
             });
         },
@@ -93,3 +136,19 @@ export default {
         }
     }
 };
+
+function commentUpdateHlpr({ campref, campPayloadCb, commentCb }) {
+    return db.runTransaction(transaction => {
+        return transaction.get(campref).then(res => {
+            let { numRatings, avgRating } = res.data();
+
+            let campPayload = campPayloadCb({ numRatings, avgRating });
+
+            transaction.update(campref, campPayload);
+
+            let payload = commentCb({ transaction });
+
+            return { campPayload, payload };
+        });
+    });
+}

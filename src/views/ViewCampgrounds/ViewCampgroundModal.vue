@@ -70,7 +70,7 @@
                                     <v-textarea
                                         v-show="rating > 0"
                                         class="mt-2"
-                                        v-model="description"
+                                        v-model="review"
                                         height="90"
                                         label="Write a review"
                                         outlined
@@ -84,7 +84,8 @@
                                     <v-btn
                                         class="ml-2"
                                         color="primary"
-                                        :disabled="description.length === 0"
+                                        :disabled="review.length === 0"
+                                        :loading="loading"
                                         @click="addComment"
                                         >Submit</v-btn
                                     >
@@ -92,6 +93,7 @@
                                         class="ml-2"
                                         text
                                         color="primary"
+                                        :disabled="loading"
                                         @click="rating = 0"
                                         >Cancel</v-btn
                                     >
@@ -153,7 +155,15 @@
                                                         >mdi-pencil</v-icon
                                                     ></v-btn
                                                 >
-                                                <v-btn icon color="error"
+                                                <v-btn
+                                                    icon
+                                                    color="error"
+                                                    :loading="
+                                                        deletingCommentObj[
+                                                            item.id
+                                                        ]
+                                                    "
+                                                    @click="deleteComment(item)"
                                                     ><v-icon
                                                         >mdi-delete</v-icon
                                                     ></v-btn
@@ -185,8 +195,10 @@
         data: () => ({
             tab: 0,
             rating: 0,
-            description: "",
-            comments: []
+            review: "",
+            comments: [],
+            loading: false,
+            deletingCommentObj: {}
         }),
         computed: {
             ...mapState("userModule", ["userId"]),
@@ -215,15 +227,45 @@
                 return moment(date).format(format);
             },
             addComment() {
+                this.loading = true;
                 this.$store
                     .dispatch("campModule/addComment", {
-                        text: this.description,
+                        text: this.review,
                         rating: this.rating,
                         campId: this.camp.id
                     })
                     .then(res => {
                         this.comments = [res, ...this.comments];
-                    });
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage: "Your comment has been added!"
+                        });
+                    })
+                    .finally(() => (this.loading = false));
+            },
+            deleteComment({ rating, id }) {
+                this.deletingCommentObj = {
+                    ...this.deletingCommentObj,
+                    [id]: true
+                };
+                this.$store
+                    .dispatch("campModule/deleteComment", {
+                        rating,
+                        campId: this.camp.id,
+                        commentId: id
+                    })
+                    .then(res => {
+                        this.comments = this.comments.filter(x => x.id !== id);
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage: "Comment has been removed."
+                        });
+                    })
+                    .finally(
+                        () =>
+                            (this.deletingCommentObj = {
+                                ...this.deletingCommentObj,
+                                [id]: false
+                            })
+                    );
             }
         },
         mounted() {
