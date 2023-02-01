@@ -93,6 +93,44 @@ export default {
                 return payload;
             });
         },
+        editComment(
+            { commit },
+            { text, oldRating, newRating, campId, commentId }
+        ) {
+            let campref = db.collection("camps").doc(campId);
+            let commentRef = db.collection("comments").doc(commentId);
+
+            return commentUpdateHlpr({
+                campref,
+                campPayloadCb({ numRatings, avgRating }) {
+                    let newAvgRating =
+                        (avgRating * numRatings + (newRating - oldRating)) /
+                        numRatings;
+
+                    return {
+                        avgRating: newAvgRating
+                    };
+                },
+                commentCb({ transaction }) {
+                    let payload = {
+                        text,
+                        rating: newRating,
+                        editedAt: moment.utc().format()
+                    };
+
+                    transaction.update(commentRef, payload);
+
+                    return payload;
+                }
+            }).then(({ campPayload, payload }) => {
+                commit("updateCamp", {
+                    campId,
+                    ...campPayload
+                });
+
+                return payload;
+            });
+        },
         async deleteComment({ commit }, { rating, campId, commentId }) {
             let campref = db.collection("camps").doc(campId);
             let commentRef = db.collection("comments").doc(commentId);
@@ -102,7 +140,7 @@ export default {
                 campPayloadCb({ numRatings, avgRating }) {
                     let newNumRating = numRatings - 1;
                     let newAvgRating =
-                        (avgRating * numRatings - rating) / newNumRating;
+                        (avgRating * numRatings - rating) / (newNumRating || 1);
 
                     return {
                         numRatings: newNumRating,

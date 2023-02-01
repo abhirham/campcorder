@@ -53,7 +53,7 @@
                     </v-tab-item>
                     <v-tab-item>
                         <div class="text-subtitle-1 ml-4">Customer Reviews</div>
-                        <template v-if="!hasUserCommented">
+                        <template v-if="!hasUserCommented || editMode">
                             <v-divider />
                             <v-card width="500" flat class="mx-0">
                                 <v-card-text>
@@ -86,15 +86,20 @@
                                         color="primary"
                                         :disabled="review.length === 0"
                                         :loading="loading"
-                                        @click="addComment"
-                                        >Submit</v-btn
+                                        @click="
+                                            editMode
+                                                ? updateComment()
+                                                : addComment()
+                                        "
                                     >
+                                        {{ editMode ? "Update" : "Submit" }}
+                                    </v-btn>
                                     <v-btn
                                         class="ml-2"
                                         text
                                         color="primary"
                                         :disabled="loading"
-                                        @click="rating = 0"
+                                        @click="cancelRating"
                                         >Cancel</v-btn
                                     >
                                 </v-card-actions>
@@ -109,7 +114,15 @@
                                 :items="comments"
                             >
                                 <template v-slot:default="{ item }">
-                                    <v-list-item two-line>
+                                    <v-list-item
+                                        two-line
+                                        v-if="
+                                            !(
+                                                editMode &&
+                                                item.userId === userId
+                                            )
+                                        "
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>
                                                 <div
@@ -150,7 +163,11 @@
                                         </v-list-item-content>
                                         <v-list-item-action>
                                             <v-row>
-                                                <v-btn icon
+                                                <v-btn
+                                                    icon
+                                                    @click="
+                                                        handleEditClick(item)
+                                                    "
                                                     ><v-icon
                                                         >mdi-pencil</v-icon
                                                     ></v-btn
@@ -198,10 +215,14 @@
             review: "",
             comments: [],
             loading: false,
-            deletingCommentObj: {}
+            deletingCommentObj: {},
+            editingComment: null
         }),
         computed: {
             ...mapState("userModule", ["userId"]),
+            editMode() {
+                return this.editingComment !== null;
+            },
             overallRating() {
                 let sum = 0;
                 let count = 0;
@@ -223,6 +244,10 @@
             }
         },
         methods: {
+            cancelRating() {
+                this.rating = 0;
+                this.editingComment = null;
+            },
             dateFormatter(date, format) {
                 return moment(date).format(format);
             },
@@ -236,6 +261,8 @@
                     })
                     .then(res => {
                         this.comments = [res, ...this.comments];
+                        this.review = "";
+                        this.rating = 0;
                         this.$store.commit("notificationModule/setAlert", {
                             alertMessage: "Your comment has been added!"
                         });
@@ -266,6 +293,30 @@
                                 [id]: false
                             })
                     );
+            },
+            handleEditClick({ rating, id, text }) {
+                this.editingComment = { rating, id };
+                this.rating = rating;
+                this.review = text;
+            },
+            updateComment() {
+                this.loading = true;
+                this.$store
+                    .dispatch("campModule/editComment", {
+                        text: this.review,
+                        commentId: this.editingComment.id,
+                        oldRating: this.editingComment.rating,
+                        newRating: this.rating,
+                        campId: this.camp.id
+                    })
+                    .then(res => {
+                        this.comments[0] = { ...this.comments[0], ...res };
+                        this.editingComment = null;
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage: "Your comment has been added!"
+                        });
+                    })
+                    .finally(() => (this.loading = false));
             }
         },
         mounted() {
