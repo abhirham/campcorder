@@ -1,5 +1,21 @@
 <template>
     <div>
+        <v-row justify="end">
+            <v-col cols="4">
+                <v-text-field
+                    placeholder="Start your search"
+                    outlined
+                    rounded
+                    hide-details
+                >
+                    <template #append>
+                        <v-avatar size="40" class="mt-n2 mr-n4" color="primary">
+                            <v-icon color="white">mdi-magnify</v-icon>
+                        </v-avatar>
+                    </template>
+                </v-text-field>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col md="4" xl="3" sm="6" v-for="camp in camps" :key="camp.id">
                 <CampgroundCard :camp="camp" />
