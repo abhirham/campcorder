@@ -2,9 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { auth } from "@/firebase";
 
-const ListCampgrounds = () =>
+const CamogroundsList = () =>
     import(
-        /* webpackChunkName: "ListCampgrounds" */ "@/views/campgrounds/container"
+        /* webpackChunkName: "CamogroundsList" */ "@/views/campgrounds/CamogroundsList"
     );
 const SignUp = () =>
     import(/* webpackChunkName: "SignUp" */ "@/views/SignUp.vue");
@@ -27,7 +27,7 @@ const routes = [
         path: "/camps/:campgroundId?",
         name: "viewCampground",
         props: true,
-        component: ListCampgrounds
+        component: CamogroundsList
     },
     {
         path: "/create",

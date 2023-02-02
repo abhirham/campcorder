@@ -53,7 +53,12 @@
                     </v-tab-item>
                     <v-tab-item>
                         <div class="text-subtitle-1 ml-4">Customer Reviews</div>
-                        <template v-if="!hasUserCommented || editMode">
+                        <template
+                            v-if="
+                                userId !== null &&
+                                    (!hasUserCommented || editMode)
+                            "
+                        >
                             <v-divider />
                             <v-card width="500" flat class="mx-0">
                                 <v-card-text>
@@ -161,7 +166,9 @@
                                                 item.text
                                             }}</v-list-item-subtitle>
                                         </v-list-item-content>
-                                        <v-list-item-action>
+                                        <v-list-item-action
+                                            v-if="item.userId === userId"
+                                        >
                                             <v-row>
                                                 <v-btn
                                                     icon

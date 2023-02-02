@@ -157,7 +157,7 @@ export default {
                 });
             });
         },
-        fetchCommentsForCamp(ctx, { campId }) {
+        fetchCommentsForCamp({ rootState }, { campId }) {
             return db
                 .collection("comments")
                 .where("campId", "==", campId)
@@ -166,7 +166,11 @@ export default {
                     let arr = [];
 
                     res.forEach(doc => {
-                        arr.push(doc.data());
+                        let data = doc.data();
+
+                        if (data.userId === rootState.userModule.userId)
+                            arr.unshift(data);
+                        else arr.push(data);
                     });
 
                     return arr;
