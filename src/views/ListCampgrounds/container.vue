@@ -7,10 +7,15 @@
                     outlined
                     rounded
                     hide-details
+                    v-model="searchText"
                     @focus="textWidth = 12"
                     @blur="textWidth = 4"
+                    append-icon="mdi-close"
+                    @click:append="
+                        searchText.length > 0 ? (searchText = '') : null
+                    "
                 >
-                    <template #append>
+                    <template #append v-if="searchText.length === 0">
                         <v-avatar size="40" class="mt-n2 mr-n4" color="primary">
                             <v-icon color="white">mdi-magnify</v-icon>
                         </v-avatar>
@@ -47,7 +52,17 @@
                 );
             },
             camps() {
-                return this.$store.state.campModule.camps;
+                let camps = Object.values(this.$store.state.campModule.camps);
+
+                if (this.searchText.length > 0)
+                    return camps.filter(
+                        x =>
+                            x.title
+                                .toLowerCase()
+                                .indexOf(this.searchText.toLowerCase()) > -1
+                    );
+
+                return camps;
             }
         },
         mounted() {
