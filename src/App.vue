@@ -53,6 +53,9 @@
                         this.$router.push({ name: "viewCampground" });
                     }
                 } else {
+                    if (this.$route.meta.authRequired) {
+                        this.$router.push({ name: "viewCampground" });
+                    }
                     this.$store.commit("userModule/clearUserData");
                 }
             });

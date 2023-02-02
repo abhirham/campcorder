@@ -3,12 +3,18 @@ import VueRouter from "vue-router";
 import { auth } from "@/firebase";
 
 const ListCampgrounds = () =>
-    import(/* webpackChunkName: "about" */ "@/views/ListCampgrounds/container");
+    import(
+        /* webpackChunkName: "ListCampgrounds" */ "@/views/campgrounds/container"
+    );
 const SignUp = () =>
-    import(/* webpackChunkName: "about" */ "@/views/SignUp.vue");
-const Login = () => import(/* webpackChunkName: "about" */ "@/views/Login.vue");
+    import(/* webpackChunkName: "SignUp" */ "@/views/SignUp.vue");
+const Login = () => import(/* webpackChunkName: "Login" */ "@/views/Login.vue");
+const UserDetails = () =>
+    import(/* webpackChunkName: "Login" */ "@/views/UserDetails.vue");
 const CreateCampGround = () =>
-    import(/* webpackChunkName: "about" */ "@/views/CreateCampGround.vue");
+    import(
+        /* webpackChunkName: "CreateCampGround" */ "@/views/campgrounds/CreateCampGround.vue"
+    );
 
 Vue.use(VueRouter);
 
@@ -28,7 +34,7 @@ const routes = [
         name: "createCamp",
         component: CreateCampGround,
         meta: {
-            authOnly: true
+            authRequired: true
         }
     },
     {
@@ -47,6 +53,14 @@ const routes = [
         meta: {
             noAuth: true,
             fillHeight: true
+        }
+    },
+    {
+        path: "/account",
+        name: "userDetails",
+        component: UserDetails,
+        meta: {
+            authRequired: true
         }
     }
 ];

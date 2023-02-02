@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import RatingsComponent from "@/views/RatingsComponent.vue";
+    import RatingsComponent from "@/views/campgrounds/RatingsComponent.vue";
 
     export default {
         name: "CampgroundCard",

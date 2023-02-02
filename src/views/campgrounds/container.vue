@@ -24,7 +24,28 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col md="4" xl="3" sm="6" v-for="camp in camps" :key="camp.id">
+            <template v-if="loading">
+                <v-col md="4" xl="3" sm="6">
+                    <v-skeleton-loader
+                        max-width="300"
+                        type="card"
+                    ></v-skeleton-loader>
+                </v-col>
+                <v-col md="4" xl="3" sm="6">
+                    <v-skeleton-loader
+                        max-width="300"
+                        type="card"
+                    ></v-skeleton-loader>
+                </v-col>
+            </template>
+            <v-col
+                v-else
+                md="4"
+                xl="3"
+                sm="6"
+                v-for="camp in filteredCamps"
+                :key="camp.id"
+            >
                 <CampgroundCard :camp="camp" />
             </v-col>
         </v-row>
@@ -33,8 +54,8 @@
 </template>
 
 <script>
-    import CampgroundCard from "@/views/CampgroundCard";
-    import ViewCampgroundModal from "@/views/ViewCampgrounds/ViewCampgroundModal.vue";
+    import CampgroundCard from "@/views/campgrounds/CampgroundCard";
+    import ViewCampgroundModal from "@/views/campgrounds/ViewCampgroundModal.vue";
 
     export default {
         name: "ListCampgrounds",
@@ -42,7 +63,8 @@
         props: ["campgroundId"],
         data: () => ({
             searchText: "",
-            textWidth: 4
+            textWidth: 4,
+            loading: false
         }),
         computed: {
             showModal() {
@@ -52,7 +74,10 @@
                 );
             },
             camps() {
-                let camps = Object.values(this.$store.state.campModule.camps);
+                return this.$store.state.campModule.camps;
+            },
+            filteredCamps() {
+                let camps = Object.values(this.camps);
 
                 if (this.searchText.length > 0)
                     return camps.filter(
@@ -66,19 +91,23 @@
             }
         },
         mounted() {
-            this.$store.dispatch("campModule/fetchCamps").then(res => {
-                let obj = {};
+            this.loading = true;
+            this.$store
+                .dispatch("campModule/fetchCamps")
+                .then(res => {
+                    let obj = {};
 
-                res.forEach(camp => {
-                    obj[camp.id] = {
-                        ...camp,
-                        src:
-                            "https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80"
-                    };
-                });
+                    res.forEach(camp => {
+                        obj[camp.id] = {
+                            ...camp,
+                            src:
+                                "https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80"
+                        };
+                    });
 
-                this.$store.commit("campModule/setCamps", obj);
-            });
+                    this.$store.commit("campModule/setCamps", obj);
+                })
+                .finally(() => (this.loading = false));
         }
     };
 </script>

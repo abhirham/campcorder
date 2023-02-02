@@ -198,8 +198,8 @@
     </v-dialog>
 </template>
 <script>
-    import CampgroundCard from "@/views/CampgroundCard";
-    import RatingsComponent from "@/views/RatingsComponent.vue";
+    import CampgroundCard from "@/views/campgrounds/CampgroundCard";
+    import RatingsComponent from "@/views/campgrounds/RatingsComponent.vue";
     import moment from "moment";
     import { mapState } from "vuex";
 

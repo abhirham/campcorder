@@ -1,5 +1,6 @@
 import { auth, db } from "@/firebase";
-
+import moment from "moment";
+import { userPromiseAction } from "@/helpers.js";
 export default {
     name: "userModule",
     namespaced: true,
@@ -32,36 +33,38 @@ export default {
         }
     },
     actions: {
-        async createUserWithEmailAndPassword(
-            { state, commit },
-            { email, password, firstName, lastName }
-        ) {
-            let resolve, reject;
+        createUserWithEmailAndPassword: userPromiseAction(
+            async ({}, { email, password, firstName, lastName, _resolve }) => {
+                let { user } = await auth.createUserWithEmailAndPassword(
+                    email,
+                    password
+                );
 
-            commit(
-                "setCreatingUserPromise",
-                new Promise((res, rej) => {
-                    resolve = res;
-                    reject = rej;
-                })
-            );
+                let payload = {
+                    userId: user.uid,
+                    firstName,
+                    lastName,
+                    email,
+                    createdAt: moment.utc().format(),
+                    lastLogIn: moment.utc().format()
+                };
 
-            let { user } = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
+                await db
+                    .collection("users")
+                    .doc(payload.userId)
+                    .set(payload);
 
-            let payload = { userId: user.uid, firstName, lastName };
-
-            await db
-                .collection("users")
-                .doc(payload.userId)
-                .set(payload);
-
-            resolve();
-        },
+                _resolve();
+            }
+        ),
         signInWithEmailAndPassword({}, { email, password }) {
-            return auth.signInWithEmailAndPassword(email, password);
+            return auth
+                .signInWithEmailAndPassword(email, password)
+                .then(({ user }) => {
+                    db.collection("users")
+                        .doc(user.uid)
+                        .update({ lastLogIn: moment.utc().format() });
+                });
         },
         logoutUser() {
             return auth.signOut();
