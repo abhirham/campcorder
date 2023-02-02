@@ -1,12 +1,14 @@
 <template>
     <div>
         <v-row justify="end">
-            <v-col cols="4">
+            <v-col class="animate" :cols="textWidth">
                 <v-text-field
                     placeholder="Start your search"
                     outlined
                     rounded
                     hide-details
+                    @focus="textWidth = 12"
+                    @blur="textWidth = 4"
                 >
                     <template #append>
                         <v-avatar size="40" class="mt-n2 mr-n4" color="primary">
@@ -33,6 +35,10 @@
         name: "ListCampgrounds",
         components: { ViewCampgroundModal, CampgroundCard },
         props: ["campgroundId"],
+        data: () => ({
+            searchText: "",
+            textWidth: 4
+        }),
         computed: {
             showModal() {
                 return (
@@ -61,3 +67,9 @@
         }
     };
 </script>
+
+<style scoped>
+    .animate {
+        transition: all 0.3s ease;
+    }
+</style>
