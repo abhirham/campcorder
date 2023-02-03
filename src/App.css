@@ -4,6 +4,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+  background-color: red;
+}
+
 .td-n {
     text-decoration: none;
 }

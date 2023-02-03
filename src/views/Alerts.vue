@@ -4,7 +4,7 @@
         :color="error ? 'error' : 'success'"
         timeout="3000"
     >
-        {{ alertMessage }}
+        <span class="white--text">{{ alertMessage }}</span>
     </v-snackbar>
 </template>
 

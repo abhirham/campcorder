@@ -10,7 +10,7 @@
             <v-img
                 gradient="to bottom, rgba(0,0,0,0), rgba(0,0,0,.7)"
                 class="white--text align-end"
-                :src="camp.src"
+                :src="(camp.image || {}).regular"
                 max-height="50vh"
             >
                 <v-btn
@@ -70,7 +70,8 @@
                                         length="5"
                                         dense
                                         v-model="rating"
-                                        background-color="primary"
+                                        background-color="action"
+                                        color="action"
                                     ></v-rating>
                                     <v-textarea
                                         v-show="rating > 0"
@@ -116,11 +117,12 @@
                             <v-virtual-scroll
                                 height="300"
                                 item-height="70"
-                                :items="comments"
+                                :items="commentsToShow"
                             >
                                 <template v-slot:default="{ item }">
                                     <v-list-item
-                                        two-line
+                                        :three-line="item.userId === userId"
+                                        :two-line="item.userId !== userId"
                                         v-if="
                                             !(
                                                 editMode &&
@@ -149,51 +151,52 @@
                                                         dense
                                                         :value="item.rating"
                                                         class="ml-3"
-                                                        background-color="primary"
+                                                        background-color="action"
+                                                        color="action"
                                                         readonly
                                                     ></v-rating>
+                                                    <div class="text-caption">
+                                                        ({{
+                                                            dateFormatter(
+                                                                item.createdAt,
+                                                                "D MMM, YYYY"
+                                                            )
+                                                        }})
+                                                    </div>
                                                 </div>
                                             </v-list-item-title>
-                                            <div class="text-caption">
-                                                ({{
-                                                    dateFormatter(
-                                                        item.createdAt,
-                                                        "D MMM, YYYY"
-                                                    )
-                                                }})
-                                            </div>
                                             <v-list-item-subtitle>{{
                                                 item.text
                                             }}</v-list-item-subtitle>
-                                        </v-list-item-content>
-                                        <v-list-item-action
-                                            v-if="item.userId === userId"
-                                        >
-                                            <v-row>
+                                            <div
+                                                class="d-flex flex-row"
+                                                v-if="item.userId === userId"
+                                            >
                                                 <v-btn
-                                                    icon
+                                                    color="#3498db"
+                                                    text
+                                                    x-small
                                                     @click="
                                                         handleEditClick(item)
                                                     "
-                                                    ><v-icon
-                                                        >mdi-pencil</v-icon
-                                                    ></v-btn
+                                                    class="font-weight-black text-capitalize"
+                                                    >Edit</v-btn
                                                 >
                                                 <v-btn
-                                                    icon
                                                     color="error"
+                                                    text
+                                                    x-small
                                                     :loading="
                                                         deletingCommentObj[
                                                             item.id
                                                         ]
                                                     "
                                                     @click="deleteComment(item)"
-                                                    ><v-icon
-                                                        >mdi-delete</v-icon
-                                                    ></v-btn
+                                                    class="font-weight-black text-capitalize"
+                                                    >Delete</v-btn
                                                 >
-                                            </v-row>
-                                        </v-list-item-action>
+                                            </div>
+                                        </v-list-item-content>
                                     </v-list-item>
                                 </template>
                             </v-virtual-scroll>
@@ -229,6 +232,13 @@
             ...mapState("userModule", ["userId"]),
             editMode() {
                 return this.editingComment !== null;
+            },
+            commentsToShow() {
+                if (this.editMode) {
+                    return this.comments.slice(1);
+                }
+
+                return this.comments;
             },
             overallRating() {
                 let sum = 0;
@@ -274,6 +284,13 @@
                             alertMessage: "Your comment has been added!"
                         });
                     })
+                    .catch(e => {
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage:
+                                "Could not add comment. Please try again.",
+                            error: true
+                        });
+                    })
                     .finally(() => (this.loading = false));
             },
             deleteComment({ rating, id }) {
@@ -291,6 +308,13 @@
                         this.comments = this.comments.filter(x => x.id !== id);
                         this.$store.commit("notificationModule/setAlert", {
                             alertMessage: "Comment has been removed."
+                        });
+                    })
+                    .catch(e => {
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage:
+                                "Could not delete comment. Please try again.",
+                            error: true
                         });
                     })
                     .finally(
@@ -321,6 +345,13 @@
                         this.editingComment = null;
                         this.$store.commit("notificationModule/setAlert", {
                             alertMessage: "Your comment has been added!"
+                        });
+                    })
+                    .catch(e => {
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage:
+                                "Could not edit comment. Please try again.",
+                            error: true
                         });
                     })
                     .finally(() => (this.loading = false));

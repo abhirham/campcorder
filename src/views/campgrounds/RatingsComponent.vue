@@ -7,7 +7,8 @@
             small
             dense
             :value="avgRating"
-            background-color="primary"
+            background-color="action"
+            color="action"
             readonly
         ></v-rating>
         <span class="ml-3">{{ totalRatings }} Reviews</span>

@@ -6,6 +6,7 @@
                     placeholder="Start your search"
                     outlined
                     rounded
+                    background-color="white"
                     hide-details
                     v-model="searchText"
                     @focus="textWidth = 12"
@@ -98,14 +99,16 @@
                     let obj = {};
 
                     res.forEach(camp => {
-                        obj[camp.id] = {
-                            ...camp,
-                            src:
-                                "https://images.unsplash.com/photo-1612832021026-375ae70f24bf?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1041&q=80"
-                        };
+                        obj[camp.id] = camp;
                     });
 
                     this.$store.commit("campModule/setCamps", obj);
+                })
+                .catch(e => {
+                    this.$store.commit("notificationModule/setAlert", {
+                        alertMessage: "Something went wrong. Please try again.",
+                        error: true
+                    });
                 })
                 .finally(() => (this.loading = false));
         }

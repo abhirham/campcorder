@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app class="customBg">
         <AppBar />
         <v-main>
             <v-container :fill-height="fillHeight || loading">
@@ -87,3 +87,9 @@
         }
     };
 </script>
+
+<style scoped>
+    .customBg {
+        background: #ecf0f1 !important;
+    }
+</style>

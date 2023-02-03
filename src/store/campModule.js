@@ -1,5 +1,6 @@
 import { db } from "@/firebase";
 import moment from "moment";
+import { unsplashApi } from "@/api";
 
 export default {
     name: "campModule",
@@ -19,10 +20,18 @@ export default {
     },
     getters: {},
     actions: {
-        createCamp({ rootState }, { title, description, price }) {
+        async createCamp({ rootState }, { title, description, price }) {
             let { userId, firstName } = rootState.userModule;
 
             let doc = db.collection("camps").doc();
+
+            let { small, regular } = await unsplashApi
+                .get("/random", {
+                    params: {
+                        query: "Campground"
+                    }
+                })
+                .then(res => res.data.urls);
 
             let payload = {
                 title,
@@ -31,6 +40,7 @@ export default {
                 createdBy: userId,
                 creatorName: firstName,
                 price,
+                image: { small, regular },
                 numRatings: 0,
                 avgRating: 0,
                 createdAt: moment.utc().format()

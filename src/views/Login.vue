@@ -55,6 +55,11 @@
                         email,
                         password
                     })
+                    .then()
+                    .catch(e => {
+                        console.log("ii-i came here 23");
+                        console.log("ii-i", e);
+                    })
                     .finally(() => (this.isLoading = false));
             }
         }

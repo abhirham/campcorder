@@ -41,27 +41,49 @@ export default {
     },
     actions: {
         createUserWithEmailAndPassword: userPromiseAction(
-            async ({}, { email, password, firstName, lastName, _resolve }) => {
-                let { user } = await auth.createUserWithEmailAndPassword(
-                    email,
-                    password
-                );
+            async (
+                { commit },
+                { email, password, firstName, lastName, _resolve }
+            ) => {
+                try {
+                    let { user } = await auth.createUserWithEmailAndPassword(
+                        email,
+                        password
+                    );
 
-                let payload = {
-                    userId: user.uid,
-                    firstName,
-                    lastName,
-                    email,
-                    createdAt: moment.utc().format(),
-                    lastLogIn: moment.utc().format()
-                };
+                    let payload = {
+                        userId: user.uid,
+                        firstName,
+                        lastName,
+                        email,
+                        createdAt: moment.utc().format(),
+                        lastLogIn: moment.utc().format()
+                    };
 
-                await db
-                    .collection("users")
-                    .doc(payload.userId)
-                    .set(payload);
+                    await db
+                        .collection("users")
+                        .doc(payload.userId)
+                        .set(payload);
 
-                _resolve();
+                    _resolve();
+                } catch (e) {
+                    console.log("ii-i", e.code, e);
+
+                    let errorMap = {
+                        "auth/email-already-in-use": "Email is already taken."
+                    };
+
+                    commit(
+                        "notificationModule/setAlert",
+                        {
+                            alertMessage:
+                                errorMap[e.code] ??
+                                "Something went wrong. Please try again.",
+                            error: true
+                        },
+                        { root: true }
+                    );
+                }
             }
         ),
         signInWithEmailAndPassword({}, { email, password }) {

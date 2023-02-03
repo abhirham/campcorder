@@ -86,6 +86,13 @@
                     .then(res => {
                         this.$router.push({ name: "viewCampground" });
                     })
+                    .catch(e => {
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage:
+                                "Unable to create camp. Please try again.",
+                            error: true
+                        });
+                    })
                     .finally(() => (this.loading = false));
             }
         }
