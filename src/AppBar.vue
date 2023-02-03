@@ -80,7 +80,9 @@
                 accountActions: [
                     {
                         text: "Account",
-                        onClick() {}
+                        onClick: () => {
+                            this.$router.push({ name: "userDetails" });
+                        }
                     },
                     {
                         text: "Log out",

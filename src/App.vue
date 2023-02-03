@@ -2,8 +2,14 @@
     <v-app>
         <AppBar />
         <v-main>
-            <v-container :fill-height="fillHeight">
-                <router-view></router-view>
+            <v-container :fill-height="fillHeight || loading">
+                <v-row justify="center" v-if="loading">
+                    <v-progress-circular
+                        indeterminate
+                        color="primary"
+                    ></v-progress-circular>
+                </v-row>
+                <router-view v-else></router-view>
             </v-container>
             <Alerts />
         </v-main>
@@ -23,6 +29,9 @@
             AppBar,
             Alerts
         },
+        data: () => ({
+            loading: true
+        }),
         computed: {
             fillHeight() {
                 return this.$route.meta.fillHeight;
@@ -41,13 +50,13 @@
                             null
                         );
                     }
+                    this.loading = true;
 
-                    await this.$store.dispatch(
-                        "userModule/fetchUserFromFirestore",
-                        {
+                    await this.$store
+                        .dispatch("userModule/fetchUserFromFirestore", {
                             userId: user.uid
-                        }
-                    );
+                        })
+                        .finally(() => (this.loading = false));
 
                     if (this.$route.meta.noAuth) {
                         this.$router.push({ name: "viewCampground" });

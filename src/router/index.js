@@ -10,7 +10,9 @@ const SignUp = () =>
     import(/* webpackChunkName: "SignUp" */ "@/views/SignUp.vue");
 const Login = () => import(/* webpackChunkName: "Login" */ "@/views/Login.vue");
 const UserDetails = () =>
-    import(/* webpackChunkName: "Login" */ "@/views/UserDetails.vue");
+    import(
+        /* webpackChunkName: "UserDetails" */ "@/views/userDetails/UserDetails.vue"
+    );
 const CreateCampGround = () =>
     import(
         /* webpackChunkName: "CreateCampGround" */ "@/views/campgrounds/CreateCampGround.vue"

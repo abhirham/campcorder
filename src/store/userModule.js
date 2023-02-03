@@ -7,14 +7,20 @@ export default {
     state() {
         return {
             userId: null,
+            email: "",
             firstName: "",
             lastName: "",
             creatingUserPromise: null
         };
     },
     mutations: {
-        setUser(state, { userId, firstName, lastName }) {
+        setUser(state, { userId, firstName, lastName, email }) {
             state.userId = userId;
+            state.firstName = firstName;
+            state.lastName = lastName;
+            state.email = email;
+        },
+        updateUser(state, { firstName, lastName }) {
             state.firstName = firstName;
             state.lastName = lastName;
         },
@@ -22,6 +28,7 @@ export default {
             state.userId = null;
             state.firstName = "";
             state.lastName = "";
+            state.email = "";
         },
         setCreatingUserPromise(state, promise) {
             state.creatingUserPromise = promise;
@@ -78,6 +85,16 @@ export default {
                     let data = res.data();
                     commit("setUser", data);
                     return data;
+                });
+        },
+        updateUser({ state, commit }, payload) {
+            return db
+                .collection("users")
+                .doc(state.userId)
+                .update(payload)
+                .then(res => {
+                    commit("updateUser", payload);
+                    return payload;
                 });
         }
     }
