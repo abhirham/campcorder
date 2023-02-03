@@ -10,7 +10,7 @@
             <v-img
                 gradient="to bottom, rgba(0,0,0,0), rgba(0,0,0,.7)"
                 class="white--text align-end"
-                :src="(camp.image || {}).regular"
+                :src="camp.image.regular"
                 max-height="50vh"
             >
                 <v-btn

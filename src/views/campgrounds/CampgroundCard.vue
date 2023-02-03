@@ -1,6 +1,6 @@
 <template>
     <v-card :to="{ name: 'viewCampground', params: { campgroundId: camp.id } }">
-        <v-img :src="(camp.image || {}).small" max-height="200px"></v-img>
+        <v-img :src="camp.image.small" max-height="200px"></v-img>
         <v-card-text>
             <v-row>
                 <v-col cols="10">

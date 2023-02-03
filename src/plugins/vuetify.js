@@ -10,7 +10,8 @@ export default new Vuetify({
                 primary: "#2c3e50",
                 action: "#f39c12",
                 error: "#e74c3c",
-                success: "#2ecc71"
+                success: "#2ecc71",
+                grayBackground: "#ecf0f1"
             }
         }
     }

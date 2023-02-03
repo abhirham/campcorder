@@ -1,6 +1,7 @@
 import { auth, db } from "@/firebase";
 import moment from "moment";
-import { userPromiseAction } from "@/helpers.js";
+import { userPromiseAction, firebaseErrorMessage } from "@/helpers.js";
+
 export default {
     name: "userModule",
     namespaced: true,
@@ -69,16 +70,10 @@ export default {
                 } catch (e) {
                     console.log("ii-i", e.code, e);
 
-                    let errorMap = {
-                        "auth/email-already-in-use": "Email is already taken."
-                    };
-
                     commit(
                         "notificationModule/setAlert",
                         {
-                            alertMessage:
-                                errorMap[e.code] ??
-                                "Something went wrong. Please try again.",
+                            alertMessage: firebaseErrorMessage(e.code),
                             error: true
                         },
                         { root: true }

@@ -1,5 +1,5 @@
 <template>
-    <v-app class="customBg">
+    <v-app class="grayBg">
         <AppBar />
         <v-main>
             <v-container :fill-height="fillHeight || loading">
@@ -59,6 +59,13 @@
                         .dispatch("userModule/fetchUserFromFirestore", {
                             userId: user.uid
                         })
+                        .catch(e => {
+                            this.$store.commit("notificationModule/setAlert", {
+                                alertMessage:
+                                    "Unable to retrieve user profile. Please try again.",
+                                error: true
+                            });
+                        })
                         .finally(() => (this.loading = false));
 
                     if (this.$route.meta.noAuth) {
@@ -87,9 +94,3 @@
         }
     };
 </script>
-
-<style scoped>
-    .customBg {
-        background: #ecf0f1 !important;
-    }
-</style>

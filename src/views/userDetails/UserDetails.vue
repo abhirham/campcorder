@@ -1,5 +1,5 @@
 <template>
-    <v-card flat max-width="600px">
+    <v-card color="grayBackground" flat max-width="600px">
         <v-btn
             @click="$router.push({ name: 'viewCampground' })"
             fixed
@@ -14,7 +14,7 @@
             Personal info</v-card-title
         >
         <v-card-text>
-            <v-list>
+            <v-list class="grayBg">
                 <EditWrapper
                     title="Email address"
                     :value="email"
@@ -29,7 +29,8 @@
                     <v-row class="mt-1">
                         <v-col cols="6">
                             <v-text-field
-                                outlined
+                                background-color="white"
+                                filled
                                 v-model="firstName"
                                 hide-details="auto"
                                 label="First Name"
@@ -37,7 +38,8 @@
                         </v-col>
                         <v-col cols="6">
                             <v-text-field
-                                outlined
+                                filled
+                                background-color="white"
                                 v-model="lastName"
                                 hide-details="auto"
                                 label="Last Name"

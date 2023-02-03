@@ -34,6 +34,8 @@
 </template>
 
 <script>
+    import { firebaseErrorMessage } from "@/helpers.js";
+
     export default {
         name: "Login",
         data: () => ({
@@ -55,10 +57,11 @@
                         email,
                         password
                     })
-                    .then()
                     .catch(e => {
-                        console.log("ii-i came here 23");
-                        console.log("ii-i", e);
+                        this.$store.commit("notificationModule/setAlert", {
+                            alertMessage: firebaseErrorMessage(e.code),
+                            error: true
+                        });
                     })
                     .finally(() => (this.isLoading = false));
             }

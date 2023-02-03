@@ -87,7 +87,18 @@
                     {
                         text: "Log out",
                         onClick: () => {
-                            this.$store.dispatch("userModule/logoutUser");
+                            this.$store
+                                .dispatch("userModule/logoutUser")
+                                .catch(e =>
+                                    this.$store.commit(
+                                        "notificationModule/setAlert",
+                                        {
+                                            alertMessage:
+                                                "Something went wrong. Please try again.",
+                                            error: true
+                                        }
+                                    )
+                                );
                         }
                     }
                 ]

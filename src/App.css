@@ -4,8 +4,8 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body {
-  background-color: red;
+.grayBg {
+  background: #ecf0f1 !important;
 }
 
 .td-n {
