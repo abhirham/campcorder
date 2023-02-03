@@ -21,6 +21,23 @@
     import Alerts from "@/views/Alerts.vue";
     import "./App.css";
     import { auth } from "@/firebase";
+    import { extend } from "vee-validate";
+    import { required, email, min } from "vee-validate/dist/rules";
+
+    extend("required", {
+        ...required,
+        message: "This field cant be empty."
+    });
+
+    extend("email", {
+        ...email,
+        message: "Invalid email."
+    });
+
+    extend("min", {
+        ...min,
+        message: "{_field_} must be atleast {length} characters long"
+    });
 
     export default {
         name: "App",

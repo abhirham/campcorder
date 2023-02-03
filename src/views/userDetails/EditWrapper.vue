@@ -8,7 +8,7 @@
                     right
                     v-if="!readonly"
                     color="black"
-                    class="font-weight-black editBtn"
+                    class="font-weight-black editBtn text-capitalize"
                     text
                     small
                     @click="editMode = !editMode"
@@ -20,25 +20,33 @@
                 {{ value || "Not provided" }}
             </v-list-item-subtitle>
             <template v-if="editMode">
-                <slot></slot>
-                <v-row class="mt-0">
-                    <v-col class="pt-0">
-                        <v-btn
-                            :loading="loading"
-                            @click="handleSave"
-                            color="primary"
-                            >Save</v-btn
-                        >
-                    </v-col>
-                </v-row>
+                <ValidationObserver v-slot="{ invalid }">
+                    <form @submit.prevent="handleSave">
+                        <slot></slot>
+                        <v-row>
+                            <v-col class="pt-0">
+                                <v-btn
+                                    :loading="loading"
+                                    type="submit"
+                                    color="primary"
+                                    :disabled="invalid"
+                                    >Save</v-btn
+                                >
+                            </v-col>
+                        </v-row>
+                    </form>
+                </ValidationObserver>
             </template>
         </v-list-item-content>
     </v-list-item>
 </template>
 
 <script>
+    import { ValidationObserver } from "vee-validate";
+
     export default {
         name: "EditWrapper",
+        components: { ValidationObserver },
         props: {
             title: { type: String },
             value: { type: String },

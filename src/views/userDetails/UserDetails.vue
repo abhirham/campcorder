@@ -28,21 +28,17 @@
                 >
                     <v-row class="mt-1">
                         <v-col cols="6">
-                            <v-text-field
-                                background-color="white"
+                            <validatedFirstName
+                                backgroundColor="white"
                                 filled
                                 v-model="firstName"
-                                hide-details="auto"
-                                label="First Name"
                             />
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field
+                            <validatedLastName
+                                backgroundColor="white"
                                 filled
-                                background-color="white"
                                 v-model="lastName"
-                                hide-details="auto"
-                                label="Last Name"
                             />
                         </v-col>
                     </v-row>
@@ -54,10 +50,15 @@
 
 <script>
     import EditWrapper from "@/views/userDetails/EditWrapper.vue";
+    import validatedFirstName from "@/views/shared/validatedFirstName.vue";
+    import validatedLastName from "@/views/shared/validatedLastName.vue";
+
     export default {
         name: "UserDetails",
         components: {
-            EditWrapper
+            EditWrapper,
+            validatedFirstName,
+            validatedLastName
         },
         data: () => ({
             email: "",
