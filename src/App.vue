@@ -66,8 +66,19 @@
                         this.$router.push({ name: "viewCampground" });
                     }
                     this.$store.commit("userModule/clearUserData");
+                    this.loading = false;
                 }
             });
+        },
+        watch: {
+            $route(val) {
+                if (
+                    val.meta.authRequired &&
+                    !this.$store.getters["userModule/isUserLoggedIn"]
+                ) {
+                    this.$router.push({ name: "viewCampground" });
+                }
+            }
         }
     };
 </script>
