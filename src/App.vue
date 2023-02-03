@@ -35,6 +35,9 @@
         computed: {
             fillHeight() {
                 return this.$route.meta.fillHeight;
+            },
+            routeWatcher() {
+                return [this.$route, this.loading];
             }
         },
         beforeMount() {
@@ -71,9 +74,11 @@
             });
         },
         watch: {
-            $route(val) {
+            routeWatcher([route, loading]) {
+                if (loading) return;
+
                 if (
-                    val.meta.authRequired &&
+                    route.meta.authRequired &&
                     !this.$store.getters["userModule/isUserLoggedIn"]
                 ) {
                     this.$router.push({ name: "viewCampground" });
