@@ -11,7 +11,7 @@
                     class="font-weight-black editBtn text-capitalize"
                     text
                     small
-                    @click="editMode = !editMode"
+                    @click="handleEditCancleClick"
                 >
                     {{ editMode ? "Cancel" : "Edit" }}
                 </v-btn>
@@ -64,6 +64,12 @@
                     .then(res => (this.editMode = false))
                     .catch(e => {})
                     .finally(() => (this.loading = false));
+            },
+            handleEditCancleClick() {
+                if (this.editMode) {
+                    this.$emit("onCancel");
+                }
+                this.editMode = !this.editMode;
             }
         }
     };

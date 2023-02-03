@@ -25,6 +25,7 @@
                     title="Legal name"
                     :cb="updateName"
                     :value="legalName"
+                    @onCancel="resetFnameAndLname"
                 >
                     <v-row class="mt-1">
                         <v-col cols="6">
@@ -91,6 +92,11 @@
 
                         throw e;
                     });
+            },
+            resetFnameAndLname() {
+                ["firstName", "lastName"].forEach(x => {
+                    this[x] = this.$store.state.userModule[x];
+                });
             }
         },
         mounted() {
