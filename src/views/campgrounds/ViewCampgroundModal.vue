@@ -117,7 +117,10 @@
                             :loading="fetchingCommentsLoader"
                             type="list-item-two-line"
                         >
-                            <v-list dense>
+                            <div class="ml-4" v-if="comments.length === 0">
+                                There are no reviews yet.
+                            </div>
+                            <v-list dense v-else>
                                 <v-virtual-scroll
                                     :height="
                                         commentsToShow.length > 0 ? 300 : 0
