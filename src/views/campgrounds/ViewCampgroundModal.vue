@@ -4,7 +4,7 @@
         :value="true"
         persistent
         no-click-animation
-        width="70%"
+        max-width="1000px"
     >
         <v-card>
             <v-img
@@ -173,7 +173,7 @@
                                                     }}
                                                 </v-list-item-title>
                                                 <v-list-item-subtitle
-                                                    class="black--text"
+                                                    class="black--text text-wrap"
                                                     >{{
                                                         item.text
                                                     }}</v-list-item-subtitle
@@ -399,3 +399,9 @@
         }
     };
 </script>
+
+<style scoped>
+    .text-wrap {
+        white-space: unset;
+    }
+</style>

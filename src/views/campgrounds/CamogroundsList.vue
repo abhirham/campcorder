@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row justify="end">
-            <v-col class="animate" :cols="textWidth">
+            <v-col class="animate" sm="12" :md="textWidth">
                 <v-text-field
                     placeholder="Start your search"
                     outlined
@@ -27,16 +27,7 @@
         <v-row>
             <template v-if="loading">
                 <v-col md="4" xl="3" sm="6">
-                    <v-skeleton-loader
-                        max-width="300"
-                        type="card"
-                    ></v-skeleton-loader>
-                </v-col>
-                <v-col md="4" xl="3" sm="6">
-                    <v-skeleton-loader
-                        max-width="300"
-                        type="card"
-                    ></v-skeleton-loader>
+                    <v-skeleton-loader type="card"></v-skeleton-loader>
                 </v-col>
             </template>
             <v-col
