@@ -13,8 +13,10 @@
             hide-details="auto"
             label="Password"
             v-model="password"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             :class="className"
+            :append-icon="`mdi-eye${showPassword ? '' : '-off'}-outline`"
+            @click:append="showPassword = !showPassword"
         />
     </ValidationProvider>
 </template>
@@ -33,6 +35,10 @@
             value: { required: true }
         },
         components: { ValidationProvider },
+        data: () => ({
+            showPassword: false
+        }),
+        mounted() {},
         computed: {
             password: {
                 get() {

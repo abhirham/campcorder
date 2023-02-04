@@ -94,7 +94,8 @@
                     },
                     {
                         divider: true,
-                        class: "d-sm-none"
+                        class: "d-sm-none",
+                        show: this.$route.name !== "createCamp"
                     },
                     {
                         text: "Account",
@@ -107,6 +108,15 @@
                         onClick: () => {
                             this.$store
                                 .dispatch("userModule/logoutUser")
+                                .then(res =>
+                                    this.$store.commit(
+                                        "notificationModule/setAlert",
+                                        {
+                                            alertMessage:
+                                                "You have been logged out."
+                                        }
+                                    )
+                                )
                                 .catch(e =>
                                     this.$store.commit(
                                         "notificationModule/setAlert",
