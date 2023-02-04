@@ -1,0 +1,70 @@
+C:\Users\savar\AppData\Roaming\npm\vue -> C:\Users\savar\AppData\Roaming\npm\node_modules\@vue\cli\bin\vue.js
+C:\Users\savar\AppData\Roaming\npm\firebase -> C:\Users\savar\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js
+C:\Users\savar\AppData\Roaming\npm\gatsby -> C:\Users\savar\AppData\Roaming\npm\node_modules\gatsby-cli\cli.js
+C:\Users\savar\AppData\Roaming\npm\npm-check-updates -> C:\Users\savar\AppData\Roaming\npm\node_modules\npm-check-updates\bin\cli.js
+C:\Users\savar\AppData\Roaming\npm\ncu -> C:\Users\savar\AppData\Roaming\npm\node_modules\npm-check-updates\bin\cli.js
+C:\Users\savar\AppData\Roaming\npm\pkg -> C:\Users\savar\AppData\Roaming\npm\node_modules\pkg\lib-es5\bin.js
+C:\Users\savar\AppData\Roaming\npm\sass -> C:\Users\savar\AppData\Roaming\npm\node_modules\sass\sass.js
+C:\Users\savar\AppData\Roaming\npm\serve -> C:\Users\savar\AppData\Roaming\npm\node_modules\serve\bin\serve.js
+
+> re2@1.16.0 install C:\Users\savar\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\re2
+> install-from-cache --artifact build/Release/re2.node --host-var RE2_DOWNLOAD_MIRROR || npm run rebuild
+
+Trying https://github.com/uhop/node-re2/releases/download/1.16.0/win32-x64-64.br ...
+Trying https://github.com/uhop/node-re2/releases/download/1.16.0/win32-x64-64.gz ...
+Building locally ...
+
+> re2@1.16.0 rebuild C:\Users\savar\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\re2
+> node-gyp rebuild
+
+
+CLINK C:\Users\savar\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\re2>if not defined npm_config_node_gyp (node "C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin\\..\..\node_modules\node-gyp\bin\node-gyp.js" rebuild )  else (node "C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\bin\node-gyp.js" rebuild ) 
+
+> @apollo/protobufjs@1.2.2 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\@vue\cli\node_modules\@apollo\protobufjs
+> node scripts/postinstall
+
+
+> core-js-pure@3.15.1 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\@vue\cli\node_modules\core-js-pure
+> node -e "try{require('./postinstall')}catch(e){}"
+
+[96mThank you for using core-js ([94m https://github.com/zloirock/core-js [96m) for polyfilling JavaScript standard library![0m
+
+[96mThe project needs your help! Please consider supporting of core-js on Open Collective or Patreon: [0m
+[96m>[94m https://opencollective.com/core-js [0m
+[96m>[94m https://www.patreon.com/zloirock [0m
+
+[96mAlso, the author of core-js ([94m https://github.com/zloirock [96m) is looking for a good job -)[0m
+
+
+> protobufjs@6.11.2 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\protobufjs
+> node scripts/postinstall
+
+
+> gatsby-telemetry@2.8.0 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\gatsby-cli\node_modules\gatsby-telemetry
+> node src/postinstall.js || true
+
+
+> core-js@3.15.1 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+
+> gatsby-cli@3.8.0 postinstall C:\Users\savar\AppData\Roaming\npm\node_modules\gatsby-cli
+> node scripts/postinstall.js
+
+Success!
+
+
+[2K[1A[2K[GWelcome to the Gatsby CLI! Please visit
+https://www.gatsbyjs.org/docs/gatsby-cli/ for more information.
+
+
++ pkg@5.3.0
++ serve@12.0.0
++ @vue/cli@4.5.13
++ sass@1.35.1
++ core-js@3.15.1
++ firebase-tools@9.14.0
++ npm-check-updates@11.7.1
++ node-notifier@10.0.0
++ gatsby-cli@3.8.0
+added 139 packages from 57 contributors, removed 82 packages, updated 372 packages and moved 6 packages in 79.315s

@@ -1,15 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
+import userModule from "./userModule";
+import campModule from "./campModule";
+import notificationModule from "./notificationModule";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+    modules: {
+        userModule,
+        campModule,
+        notificationModule
+    },
+    state: {},
+    mutations: {},
+    actions: {}
+});
