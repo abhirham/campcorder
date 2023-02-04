@@ -53,7 +53,6 @@
                 class="d-md-none"
                 >back</v-btn
             >
-            color
         </v-card-actions>
     </v-card>
 </template>
