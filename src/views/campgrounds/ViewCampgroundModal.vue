@@ -113,100 +113,117 @@
                             <v-divider />
                         </template>
 
-                        <v-list dense>
-                            <v-virtual-scroll
-                                height="300"
-                                item-height="70"
-                                :items="commentsToShow"
-                            >
-                                <template v-slot:default="{ item, index }">
-                                    <v-list-item
-                                        :three-line="item.userId === userId"
-                                        :two-line="item.userId !== userId"
-                                        v-if="
-                                            !(
-                                                editMode &&
-                                                item.userId === userId
-                                            )
-                                        "
-                                    >
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                class="d-flex flex-row align-center"
-                                            >
-                                                <v-rating
-                                                    hover
-                                                    half-increments
-                                                    length="5"
-                                                    x-small
-                                                    dense
-                                                    :value="item.rating"
-                                                    background-color="action"
-                                                    color="action"
-                                                    readonly
-                                                ></v-rating>
-                                                <span
-                                                    :class="[
-                                                        'ml-2 mr-1',
-                                                        {
-                                                            'primary--text font-weight-bold':
-                                                                item.userId ===
-                                                                userId
-                                                        }
-                                                    ]"
+                        <v-skeleton-loader
+                            :loading="fetchingCommentsLoader"
+                            type="list-item-two-line"
+                        >
+                            <v-list dense>
+                                <v-virtual-scroll
+                                    :height="
+                                        commentsToShow.length > 0 ? 300 : 0
+                                    "
+                                    item-height="70"
+                                    :items="commentsToShow"
+                                >
+                                    <template v-slot:default="{ item, index }">
+                                        <v-list-item
+                                            :three-line="item.userId === userId"
+                                            :two-line="item.userId !== userId"
+                                            v-if="
+                                                !(
+                                                    editMode &&
+                                                    item.userId === userId
+                                                )
+                                            "
+                                        >
+                                            <v-list-item-content>
+                                                <v-list-item-title
+                                                    class="d-flex flex-row align-center"
                                                 >
-                                                    {{ item.userName }}
-                                                </span>
-                                                on
+                                                    <v-rating
+                                                        hover
+                                                        half-increments
+                                                        length="5"
+                                                        x-small
+                                                        dense
+                                                        :value="item.rating"
+                                                        background-color="action"
+                                                        color="action"
+                                                        readonly
+                                                    ></v-rating>
+                                                    <span
+                                                        :class="[
+                                                            'ml-2 mr-1',
+                                                            {
+                                                                'primary--text font-weight-bold':
+                                                                    item.userId ===
+                                                                    userId
+                                                            }
+                                                        ]"
+                                                    >
+                                                        {{ item.userName }}
+                                                    </span>
+                                                    on
 
-                                                {{
-                                                    dateFormatter(
-                                                        item.createdAt,
-                                                        "MMM D, YYYY"
-                                                    )
-                                                }}
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle>{{
-                                                item.text
-                                            }}</v-list-item-subtitle>
-                                            <div
-                                                class="d-flex flex-row"
-                                                v-if="item.userId === userId"
-                                            >
-                                                <v-btn
-                                                    color="#3498db"
-                                                    text
-                                                    x-small
-                                                    @click="
-                                                        handleEditClick(item)
-                                                    "
-                                                    class="font-weight-black text-capitalize"
-                                                    >Edit</v-btn
+                                                    {{
+                                                        dateFormatter(
+                                                            item.createdAt,
+                                                            "MMM D, YYYY"
+                                                        )
+                                                    }}
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle
+                                                    class="black--text"
+                                                    >{{
+                                                        item.text
+                                                    }}</v-list-item-subtitle
                                                 >
-                                                <v-btn
-                                                    color="error"
-                                                    text
-                                                    x-small
-                                                    :loading="
-                                                        deletingCommentObj[
-                                                            item.id
-                                                        ]
+                                                <div
+                                                    class="d-flex flex-row"
+                                                    v-if="
+                                                        item.userId === userId
                                                     "
-                                                    @click="deleteComment(item)"
-                                                    class="font-weight-black text-capitalize"
-                                                    >Delete</v-btn
                                                 >
-                                            </div>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-divider
-                                        v-if="
-                                            index !== commentsToShow.length - 1
-                                        "
-                                    />
-                                </template>
-                            </v-virtual-scroll>
-                        </v-list>
+                                                    <v-btn
+                                                        color="#3498db"
+                                                        text
+                                                        x-small
+                                                        @click="
+                                                            handleEditClick(
+                                                                item
+                                                            )
+                                                        "
+                                                        class="font-weight-black text-capitalize"
+                                                        >Edit</v-btn
+                                                    >
+                                                    <v-btn
+                                                        color="error"
+                                                        text
+                                                        x-small
+                                                        :loading="
+                                                            deletingCommentObj[
+                                                                item.id
+                                                            ]
+                                                        "
+                                                        @click="
+                                                            deleteComment(item)
+                                                        "
+                                                        class="font-weight-black text-capitalize"
+                                                        >Delete</v-btn
+                                                    >
+                                                </div>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-divider
+                                            v-if="
+                                                index !==
+                                                    commentsToShow.length - 1
+                                            "
+                                        />
+                                    </template>
+                                </v-virtual-scroll>
+                            </v-list>
+                        </v-skeleton-loader>
                     </v-tab-item>
                 </v-tabs-items>
             </v-card-text>
@@ -231,6 +248,7 @@
             review: "",
             comments: [],
             loading: false,
+            fetchingCommentsLoader: false,
             deletingCommentObj: {},
             editingComment: null
         }),
@@ -364,11 +382,20 @@
             }
         },
         mounted() {
+            this.fetchingCommentsLoader = true;
             this.$store
                 .dispatch("campModule/fetchCommentsForCamp", {
                     campId: this.camp.id
                 })
-                .then(res => (this.comments = res));
+                .then(res => (this.comments = res))
+                .catch(e => {
+                    this.$store.commit("notificationModule/setAlert", {
+                        alertMessage:
+                            "Could not fetch reviews. Please try again.",
+                        error: true
+                    });
+                })
+                .finally(() => (this.fetchingCommentsLoader = false));
         }
     };
 </script>

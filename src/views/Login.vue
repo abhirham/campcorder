@@ -28,6 +28,23 @@
                     </form>
                 </ValidationObserver>
             </v-card-text>
+            <v-card-actions>
+                <v-row>
+                    <v-col cols="12">
+                        <v-divider />
+                        <div class="my-3">
+                            Dont have an account?
+                            <v-btn
+                                color="primary"
+                                text
+                                :to="{ name: 'signup' }"
+                                class="font-weight-bold text-capitalize px-0"
+                                >Sign Up</v-btn
+                            >
+                        </div>
+                    </v-col>
+                </v-row>
+            </v-card-actions>
         </v-card>
     </v-row>
 </template>

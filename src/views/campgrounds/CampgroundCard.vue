@@ -1,15 +1,11 @@
 <template>
-    <v-card :to="{ name: 'viewCampground', params: { campgroundId: camp.id } }">
+    <v-card
+        hover
+        :to="{ name: 'viewCampground', params: { campgroundId: camp.id } }"
+    >
         <v-img :src="camp.image.small" max-height="200px"></v-img>
         <v-card-text>
-            <v-row>
-                <v-col cols="10">
-                    <h3 class="primary--text">{{ camp.title }}</h3>
-                </v-col>
-                <v-col cols="2" align="end" class="black--text">
-                    <span>$</span>
-                </v-col>
-            </v-row>
+            <h3 class="primary--text">{{ camp.title }}</h3>
             <RatingsComponent
                 class="mt-1"
                 :totalRatings="camp.numRatings"
