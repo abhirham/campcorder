@@ -6,7 +6,7 @@
             left
             icon
             color="black"
-            class="mt-4"
+            class="mt-4 d-none d-md-inline-flex"
         >
             <v-icon large>mdi-chevron-left</v-icon>
         </v-btn>
@@ -46,6 +46,15 @@
                 </EditWrapper>
             </v-list>
         </v-card-text>
+        <v-card-actions>
+            <v-btn
+                color="primary"
+                @click="$router.push({ name: 'viewCampground' })"
+                class="d-md-none"
+                >back</v-btn
+            >
+            color
+        </v-card-actions>
     </v-card>
 </template>
 

@@ -13,7 +13,7 @@
                 <v-spacer></v-spacer>
                 <template v-if="isUserLoggedIn">
                     <v-btn
-                        class="mr-2"
+                        class="mr-2 d-none d-sm-inline-flex"
                         v-if="$route.name !== 'createCamp'"
                         @click="$router.push({ name: 'createCamp' })"
                         rounded
@@ -35,15 +35,23 @@
                             </v-btn>
                         </template>
                         <v-list>
-                            <v-list-item
-                                v-for="(item, index) in accountActions"
-                                :key="index"
-                                @click="item.onClick"
-                            >
-                                <v-list-item-title>{{
-                                    item.text
-                                }}</v-list-item-title>
-                            </v-list-item>
+                            <template v-for="(item, index) in accountActions">
+                                <v-divider
+                                    v-if="item.divider"
+                                    :class="item.class"
+                                    :key="index"
+                                />
+                                <v-list-item
+                                    v-else
+                                    :key="index"
+                                    @click="item.onClick"
+                                    :class="item.class"
+                                >
+                                    <v-list-item-title>{{
+                                        item.text
+                                    }}</v-list-item-title>
+                                </v-list-item>
+                            </template>
                         </v-list>
                     </v-menu>
                 </template>
@@ -73,11 +81,22 @@
         name: "AppBar",
         components: {},
         computed: {
-            ...mapGetters("userModule", ["isUserLoggedIn"])
-        },
-        data() {
-            return {
-                accountActions: [
+            ...mapGetters("userModule", ["isUserLoggedIn"]),
+            accountActions() {
+                return [
+                    {
+                        text: "Add new Camp",
+                        onClick: () => {
+                            this.$router.push({ name: "createCamp" });
+                        },
+                        class: "d-sm-none",
+                        show: this.$route.name !== "createCamp"
+                    },
+                    {
+                        divider: true,
+                        class: "d-sm-none",
+                        show: this.$route.name !== "createCamp"
+                    },
                     {
                         text: "Account",
                         onClick: () => {
@@ -89,6 +108,15 @@
                         onClick: () => {
                             this.$store
                                 .dispatch("userModule/logoutUser")
+                                .then(res =>
+                                    this.$store.commit(
+                                        "notificationModule/setAlert",
+                                        {
+                                            alertMessage:
+                                                "You have been logged out."
+                                        }
+                                    )
+                                )
                                 .catch(e =>
                                     this.$store.commit(
                                         "notificationModule/setAlert",
@@ -101,8 +129,8 @@
                                 );
                         }
                     }
-                ]
-            };
+                ].filter(x => x.show !== false);
+            }
         }
     };
 </script>

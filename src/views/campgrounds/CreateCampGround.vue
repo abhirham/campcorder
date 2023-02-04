@@ -29,7 +29,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="3">
+                <v-col cols="6" sm="3">
                     <v-text-field
                         filled
                         background-color="white"
