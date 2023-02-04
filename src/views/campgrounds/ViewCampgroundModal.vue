@@ -119,7 +119,7 @@
                                 item-height="70"
                                 :items="commentsToShow"
                             >
-                                <template v-slot:default="{ item }">
+                                <template v-slot:default="{ item, index }">
                                     <v-list-item
                                         :three-line="item.userId === userId"
                                         :two-line="item.userId !== userId"
@@ -131,10 +131,23 @@
                                         "
                                     >
                                         <v-list-item-content>
-                                            <v-list-item-title>
-                                                <div
+                                            <v-list-item-title
+                                                class="d-flex flex-row align-center"
+                                            >
+                                                <v-rating
+                                                    hover
+                                                    half-increments
+                                                    length="5"
+                                                    x-small
+                                                    dense
+                                                    :value="item.rating"
+                                                    background-color="action"
+                                                    color="action"
+                                                    readonly
+                                                ></v-rating>
+                                                <span
                                                     :class="[
-                                                        'd-flex flex-row',
+                                                        'ml-2 mr-1',
                                                         {
                                                             'primary--text font-weight-bold':
                                                                 item.userId ===
@@ -143,27 +156,15 @@
                                                     ]"
                                                 >
                                                     {{ item.userName }}
-                                                    <v-rating
-                                                        hover
-                                                        half-increments
-                                                        length="5"
-                                                        x-small
-                                                        dense
-                                                        :value="item.rating"
-                                                        class="ml-3"
-                                                        background-color="action"
-                                                        color="action"
-                                                        readonly
-                                                    ></v-rating>
-                                                    <div class="text-caption">
-                                                        ({{
-                                                            dateFormatter(
-                                                                item.createdAt,
-                                                                "D MMM, YYYY"
-                                                            )
-                                                        }})
-                                                    </div>
-                                                </div>
+                                                </span>
+                                                on
+
+                                                {{
+                                                    dateFormatter(
+                                                        item.createdAt,
+                                                        "MMM D, YYYY"
+                                                    )
+                                                }}
                                             </v-list-item-title>
                                             <v-list-item-subtitle>{{
                                                 item.text
@@ -198,6 +199,11 @@
                                             </div>
                                         </v-list-item-content>
                                     </v-list-item>
+                                    <v-divider
+                                        v-if="
+                                            index !== commentsToShow.length - 1
+                                        "
+                                    />
                                 </template>
                             </v-virtual-scroll>
                         </v-list>
